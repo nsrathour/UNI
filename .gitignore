@@ -1,0 +1,46 @@
+# Node modules
+node_modules/
+
+# Environment variables 
+.env
+
+# Log files
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS/system files
+.DS_Store
+Thumbs.db
+
+# Optional cache / temp folders
+.cache/
+.tmp/
+dist/
+build/
+
+# VS Code
+.vscode/
+
+# MongoDB local database files (if used)
+data/
+*.lock
+
+# Node server pid
+pids
+*.pid
+*.seed
+
+# npm cache
+.npm/
+
+# coverage from testing
+coverage/
+
+# Uploads (if any local storage)
+uploads/
+
+# EJS compiled cache (if enabled)
+*.ejs.cache
