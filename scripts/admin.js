@@ -10,9 +10,15 @@ mongoose.connect("mongodb://localhost:27017/UAAS")//link ko smjho UAAS ky karega
 .catch((err) => console.log(err))
 
 async function addAdminCred(){
+
+    //salt value 10 time bcrypr your password by bycrpt library
+    //hash function used to hash password
+
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash("12345" , salt)
     const admin = await userModel.create({
-        email:"admin@1234",
-        password : "admin1234",
+        email:"admin@12345",
+        password : hashedPassword,
         firstName : "Navditya",
         lastName : "Rathour",
         role:"admin"
