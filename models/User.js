@@ -1,43 +1,45 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-//command for using mongoose to create schema
-const userSchema =new  mongoose.Schema({
-    email : {
-        type : String,
-        required : true,
-        unique:true
-    } , 
-    password : {
-       type : String ,//ye string or num dono ke lye valid haii 
-       required : true , 
-    } , 
-    firstName : {
-        type : String ,
-        required : true
+// Mongoose Schema
+const userSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    lastName : {
-        type : String ,
-        // required : true
+    password: {
+        type: String,
+        required: true
     },
-    role : {
-        type  : String ,
-        enum : ['admin' , 'student' , 'professor' , 'HOD'],
-        default : 'student'
+
+    firstName: {
+        type: String,
+        required: true
     },
-    department : {
-        type : String 
-    }, 
-    isActive  : {
-        type : Boolean ,
-        default : true
+
+    lastName: {
+        type: String
+    },
+
+    role: {
+        type: String,
+        enum: ['admin', 'student', 'professor', 'HOD'],
+        default: 'student'
+    },
+
+    // Correct department reference
+    department: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Department"
+    },
+
+    isActive: {
+        type: Boolean,
+        default: true
     }
-} , {
-    timestamps : true //why we have written this ?
-//Automatically add two fields in every document:
-// createdAt - kab document create hua
-// updatedAt - kab last time update hua
-})
+},
+{
+    timestamps: true
+});
 
-const userModel = mongoose.model("uaauser" , userSchema)//jo string mea likha hai uske name se collection banegi
-
-module.exports = userModel
+module.exports = mongoose.model("uaauser", userSchema);

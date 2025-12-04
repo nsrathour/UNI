@@ -7,6 +7,10 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 🔥 SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="bg-gradient-to-br from-blue-100 to-blue-200 min-h-screen">
@@ -92,15 +96,21 @@
                                 <td class="p-4 text-gray-800"><%= d.address %></td>
 
                                 <td class="p-4 text-center">
-                                    <a href="/admin/departments/edit/<%= d._id %>"
+                                    <a href="/admin/departments/<%= d._id %>/edit"
                                        class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mr-3">
                                        Edit
                                     </a>
 
-                                    <a href="/admin/departments/delete/<%= d._id %>"
-                                       class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                    <!-- Delete Button -->
+                                    <button
+                                       class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                                       data-id="<%= d._id %>"
+                                       data-count="<%= d.userCount || 0 %>"
+                                       onclick="confirmDelete(this.dataset.id, this.dataset.count)">
                                        Delete
-                                    </a>
+                                    </button>
+
+
                                 </td>
                             </tr>
                         <% }) %>
@@ -116,6 +126,40 @@
         </div>
 
     </div>
+
+    <!--  Delete Confirmation Script -->
+    <script>
+        function confirmDelete(id, userCount) {
+            userCount = parseInt(userCount) || 0;
+
+            // Check if department has users
+            if (userCount > 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Cannot Delete',
+                    text: 'This department has assigned users. Remove or reassign them first.',
+                    confirmButtonColor: '#3085d6'
+                });
+                return;
+            }
+
+            //  If no users, show confirmation
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will permanently delete the department!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/admin/departments/${id}/delete`;
+                }
+            });
+
+        }
+    </script>
 
     <!-- Client-Side Search + Filter -->
     <script>
@@ -134,11 +178,7 @@
                 const matchesSearch = name.includes(searchValue);
                 const matchesFilter = filterValue === "all" || type === filterValue;
 
-                if (matchesSearch && matchesFilter) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                row.style.display = (matchesSearch && matchesFilter) ? "" : "none";
             });
         }
 
